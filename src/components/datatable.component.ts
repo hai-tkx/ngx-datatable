@@ -676,8 +676,8 @@ export class DatatableComponent implements OnInit, DoCheck, AfterViewInit {
   _subscriptions: Subscription[] = [];
 
   constructor(
-    @SkipSelf() private scrollbarHelper: ScrollbarHelper,
-    @SkipSelf() private dimensionsHelper: DimensionsHelper,
+    private scrollbarHelper: ScrollbarHelper,
+    private dimensionsHelper: DimensionsHelper,
     private cd: ChangeDetectorRef,
     element: ElementRef,
     differs: KeyValueDiffers,

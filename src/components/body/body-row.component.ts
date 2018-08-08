@@ -31,7 +31,8 @@ import { MouseEvent, KeyboardEvent, Event } from '../../events';
         (activate)="onActivate($event, ii)">
       </datatable-body-cell>
     </div>
-  `
+  `,
+  providers: [ScrollbarHelper]
 })
 export class DataTableBodyRowComponent implements DoCheck {
 
@@ -123,7 +124,7 @@ export class DataTableBodyRowComponent implements DoCheck {
 
   constructor(
       private differs: KeyValueDiffers,
-      @SkipSelf() private scrollbarHelper: ScrollbarHelper,
+      private scrollbarHelper: ScrollbarHelper,
       private cd: ChangeDetectorRef,
       element: ElementRef) {
     this._element = element.nativeElement;

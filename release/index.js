@@ -918,9 +918,6 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
-var __param = (this && this.__param) || function (paramIndex, decorator) {
-    return function (target, key) { decorator(target, key, paramIndex); }
-};
 Object.defineProperty(exports, "__esModule", { value: true });
 var core_1 = __webpack_require__("@angular/core");
 var utils_1 = __webpack_require__("./src/utils/index.ts");
@@ -1164,9 +1161,9 @@ var DataTableBodyRowComponent = /** @class */ (function () {
         core_1.Component({
             selector: 'datatable-body-row',
             changeDetection: core_1.ChangeDetectionStrategy.OnPush,
-            template: "\n    <div\n      *ngFor=\"let colGroup of _columnsByPin; let i = index; trackBy: trackByGroups\"\n      class=\"datatable-row-{{colGroup.type}} datatable-row-group\"\n      [ngStyle]=\"_groupStyles[colGroup.type]\">\n      <datatable-body-cell\n        *ngFor=\"let column of colGroup.columns; let ii = index; trackBy: columnTrackingFn\"\n        tabindex=\"-1\"\n        [row]=\"row\"\n        [group]=\"group\"\n        [expanded]=\"expanded\"\n        [isSelected]=\"isSelected\"\n        [rowIndex]=\"rowIndex\"\n        [column]=\"column\"\n        [rowHeight]=\"rowHeight\"\n        [displayCheck]=\"displayCheck\"\n        (activate)=\"onActivate($event, ii)\">\n      </datatable-body-cell>\n    </div>\n  "
+            template: "\n    <div\n      *ngFor=\"let colGroup of _columnsByPin; let i = index; trackBy: trackByGroups\"\n      class=\"datatable-row-{{colGroup.type}} datatable-row-group\"\n      [ngStyle]=\"_groupStyles[colGroup.type]\">\n      <datatable-body-cell\n        *ngFor=\"let column of colGroup.columns; let ii = index; trackBy: columnTrackingFn\"\n        tabindex=\"-1\"\n        [row]=\"row\"\n        [group]=\"group\"\n        [expanded]=\"expanded\"\n        [isSelected]=\"isSelected\"\n        [rowIndex]=\"rowIndex\"\n        [column]=\"column\"\n        [rowHeight]=\"rowHeight\"\n        [displayCheck]=\"displayCheck\"\n        (activate)=\"onActivate($event, ii)\">\n      </datatable-body-cell>\n    </div>\n  ",
+            providers: [services_1.ScrollbarHelper]
         }),
-        __param(1, core_1.SkipSelf()),
         __metadata("design:paramtypes", [core_1.KeyValueDiffers,
             services_1.ScrollbarHelper,
             core_1.ChangeDetectorRef,
@@ -2663,9 +2660,6 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
-var __param = (this && this.__param) || function (paramIndex, decorator) {
-    return function (target, key) { decorator(target, key, paramIndex); }
-};
 Object.defineProperty(exports, "__esModule", { value: true });
 var core_1 = __webpack_require__("@angular/core");
 var utils_1 = __webpack_require__("./src/utils/index.ts");
@@ -3808,8 +3802,6 @@ var DatatableComponent = /** @class */ (function () {
                 class: 'ngx-datatable'
             }
         }),
-        __param(0, core_1.SkipSelf()),
-        __param(1, core_1.SkipSelf()),
         __metadata("design:paramtypes", [services_1.ScrollbarHelper,
             services_1.DimensionsHelper,
             core_1.ChangeDetectorRef,
@@ -5780,9 +5772,9 @@ exports.VisibilityDirective = VisibilityDirective;
 /* WEBPACK VAR INJECTION */(function(global) {
 Object.defineProperty(exports, "__esModule", { value: true });
 /* tslint:disable:variable-name */
-exports.MouseEvent = (window || global).MouseEvent;
-exports.KeyboardEvent = (window || global).KeyboardEvent;
-exports.Event = (window || global).Event;
+exports.MouseEvent = ((typeof window !== 'undefined' && window) || global).MouseEvent;
+exports.KeyboardEvent = ((typeof window !== 'undefined' && window) || global).KeyboardEvent;
+exports.Event = ((typeof window !== 'undefined' && window) || global).Event;
 
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__("./node_modules/webpack/buildin/global.js")))
 
@@ -5868,7 +5860,19 @@ var DimensionsHelper = /** @class */ (function () {
     function DimensionsHelper() {
     }
     DimensionsHelper.prototype.getDimensions = function (element) {
-        return element.getBoundingClientRect();
+        if (typeof window !== 'undefined') {
+            return element.getBoundingClientRect();
+        }
+        else {
+            return {
+                width: 1000,
+                height: 800,
+                top: 0,
+                left: 0,
+                bottom: 0,
+                right: 0
+            };
+        }
     };
     DimensionsHelper = __decorate([
         core_1.Injectable()
@@ -5926,19 +5930,24 @@ var ScrollbarHelper = /** @class */ (function () {
         this.width = this.getWidth();
     }
     ScrollbarHelper.prototype.getWidth = function () {
-        var outer = this.document.createElement('div');
-        outer.style.visibility = 'hidden';
-        outer.style.width = '100px';
-        outer.style.msOverflowStyle = 'scrollbar';
-        this.document.body.appendChild(outer);
-        var widthNoScroll = outer.offsetWidth;
-        outer.style.overflow = 'scroll';
-        var inner = this.document.createElement('div');
-        inner.style.width = '100%';
-        outer.appendChild(inner);
-        var widthWithScroll = inner.offsetWidth;
-        outer.parentNode.removeChild(outer);
-        return widthNoScroll - widthWithScroll;
+        if (typeof window !== 'undefined') {
+            var outer = this.document.createElement('div');
+            outer.style.visibility = 'hidden';
+            outer.style.width = '100px';
+            outer.style.msOverflowStyle = 'scrollbar';
+            this.document.body.appendChild(outer);
+            var widthNoScroll = outer.offsetWidth;
+            outer.style.overflow = 'scroll';
+            var inner = this.document.createElement('div');
+            inner.style.width = '100%';
+            outer.appendChild(inner);
+            var widthWithScroll = inner.offsetWidth;
+            outer.parentNode.removeChild(outer);
+            return widthNoScroll - widthWithScroll;
+        }
+        else {
+            return 16;
+        }
     };
     ScrollbarHelper = __decorate([
         core_1.Injectable(),

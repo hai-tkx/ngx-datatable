@@ -24,19 +24,24 @@ var ScrollbarHelper = /** @class */ (function () {
         this.width = this.getWidth();
     }
     ScrollbarHelper.prototype.getWidth = function () {
-        var outer = this.document.createElement('div');
-        outer.style.visibility = 'hidden';
-        outer.style.width = '100px';
-        outer.style.msOverflowStyle = 'scrollbar';
-        this.document.body.appendChild(outer);
-        var widthNoScroll = outer.offsetWidth;
-        outer.style.overflow = 'scroll';
-        var inner = this.document.createElement('div');
-        inner.style.width = '100%';
-        outer.appendChild(inner);
-        var widthWithScroll = inner.offsetWidth;
-        outer.parentNode.removeChild(outer);
-        return widthNoScroll - widthWithScroll;
+        if (typeof window !== 'undefined') {
+            var outer = this.document.createElement('div');
+            outer.style.visibility = 'hidden';
+            outer.style.width = '100px';
+            outer.style.msOverflowStyle = 'scrollbar';
+            this.document.body.appendChild(outer);
+            var widthNoScroll = outer.offsetWidth;
+            outer.style.overflow = 'scroll';
+            var inner = this.document.createElement('div');
+            inner.style.width = '100%';
+            outer.appendChild(inner);
+            var widthWithScroll = inner.offsetWidth;
+            outer.parentNode.removeChild(outer);
+            return widthNoScroll - widthWithScroll;
+        }
+        else {
+            return 16;
+        }
     };
     ScrollbarHelper = __decorate([
         core_1.Injectable(),
