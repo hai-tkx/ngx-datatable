@@ -15,7 +15,19 @@ var DimensionsHelper = /** @class */ (function () {
     function DimensionsHelper() {
     }
     DimensionsHelper.prototype.getDimensions = function (element) {
-        return element.getBoundingClientRect();
+        if (typeof window !== 'undefined') {
+            return element.getBoundingClientRect();
+        }
+        else {
+            return {
+                width: 1000,
+                height: 800,
+                top: 0,
+                left: 0,
+                bottom: 0,
+                right: 0
+            };
+        }
     };
     DimensionsHelper = __decorate([
         core_1.Injectable()
