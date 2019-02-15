@@ -34,7 +34,8 @@ import { TreeStatus } from '../../index';
         (treeAction)="onTreeAction()">
       </datatable-body-cell>
     </div>
-  `
+  `,
+  providers: [ScrollbarHelper]
 })
 export class DataTableBodyRowComponent implements DoCheck {
 
@@ -128,7 +129,7 @@ export class DataTableBodyRowComponent implements DoCheck {
 
   constructor(
       private differs: KeyValueDiffers,
-      @SkipSelf() private scrollbarHelper: ScrollbarHelper,
+      private scrollbarHelper: ScrollbarHelper,
       private cd: ChangeDetectorRef,
       element: ElementRef) {
     this._element = element.nativeElement;

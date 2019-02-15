@@ -8,7 +8,18 @@ import { Inject, Injectable } from '@angular/core';
 export class DimensionsHelper {
 
   getDimensions(element: Element): ClientRect {
-    return element.getBoundingClientRect();
+    if (typeof window !== 'undefined') {
+      return element.getBoundingClientRect();
+    } else {
+      return {
+        width: 1000,
+        height: 800,
+        top: 0,
+        left: 0,
+        bottom: 0,
+        right: 0
+      };
+    }
   }
 
 }
